@@ -9,7 +9,7 @@
 set username [lindex $argv 0]
 set cluster [lindex $argv 1]
 set token1 [lindex $argv 2]
-set token2 [lindex $argv 2]
+set token2 [lindex $argv 3]
 
 spawn ./tess login --username=$username -c $cluster
 
