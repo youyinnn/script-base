@@ -11,7 +11,7 @@ set cluster [lindex $argv 1]
 set token1 [lindex $argv 2]
 set token2 [lindex $argv 3]
 
-spawn ./tess login --username=$username -c $cluster
+spawn /tess login -c $cluster --username=$username --namespace=numessage
 
 expect {
     "Pin + Yubikey Token:" {
@@ -20,7 +20,13 @@ expect {
     }
     "Yubikey Token:" {
         send "$token2\n"
+        exp_continue
+    }
+    # send eof when success
+    "successfully authenticated" {
+        send eof
     }
 }
-
+# if didn't expect eof that means the login was fail
+# should return exit 1 code to tell jenkins this build was fail
 expect eof
