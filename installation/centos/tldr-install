@@ -1,0 +1,43 @@
+#!/bin/bash
+
+set -e
+
+if [ `whereis tldr | wc -c` -eq 5 ]
+then
+    echo "tldr was installed on: `whereis tldr`"
+    exit 0
+fi
+
+_echo_usage(){
+    echo "options:"
+    echo "  --all install for all user (will install in /usr/bin)"
+    echo "  --me  install for current user (will install in ~/bin)"
+}
+
+# check parameter
+if [ $# -eq 0 ]
+then
+    _echo_usage
+else
+    case $1 in
+        --all)
+            sudo curl -o /usr/bin/tldr https://raw.githubusercontent.com/raylee/tldr/master/tldr
+            sudo chmod +x /usr/bin/tldr
+            complete -W "$(tldr 2>/dev/null --list)" tldr
+        ;;
+        --me)
+            mkdir -p ~/bin
+            sudo curl -o ~/bin/tldr https://raw.githubusercontent.com/raylee/tldr/master/tldr
+            sudo chmod +x ~/bin/tldr
+            complete -W "$(tldr 2>/dev/null --list)" tldr
+        ;;
+        *)
+            echo "unrecognized option: $1"
+            _echo_usage
+        ;;
+    esac
+fi
+
+
+
+
