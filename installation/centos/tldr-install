@@ -2,7 +2,7 @@
 
 set -e
 
-if [ `whereis tldr | wc -c` -eq 5 ]
+if [ `whereis tldr | wc -c` -gt 5 ]
 then
     echo "tldr was installed on: `whereis tldr`"
     exit 0
